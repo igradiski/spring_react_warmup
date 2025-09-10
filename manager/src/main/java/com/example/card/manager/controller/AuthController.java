@@ -1,4 +1,4 @@
-package com.example.card.manager;
+package com.example.card.manager.controller;
 
 import com.example.card.manager.domain.dto.UserDto;
 import com.example.card.manager.services.UserService;
@@ -24,6 +24,12 @@ public class AuthController {
 
         log.info("Echo test request");
         return ResponseEntity.status(HttpStatus.OK).body("API radi!");
+    }
+
+    @PostMapping("/signup")
+    public ResponseEntity<?> registerUser(@RequestBody UserDto userDto){
+        log.info("Sign up for user "+userDto.toString());
+        return userService.registerUser(userDto);
     }
 
     @PostMapping("/signin")
