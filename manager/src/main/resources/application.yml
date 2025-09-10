@@ -1,0 +1,70 @@
+server:
+  port: 8085
+  servlet:
+    context-path: /manager/api
+  tomcat:
+    accesslog:
+      enabled: true
+      pattern: '{"remoteIP": "%a", "localIP": "%A", "clientHost": "%h", "protocol": "%H", "requestMethod": "%m", "requestURL": "%r", "statusCode": "%s", "elapsedTime": "%D", "responseTime": "%F", "date": "%t{dd MMM yyyy HH:mm:ss,SSS}", "user": "%u", "requestURI": "%U", "server": "%v", "spanID": "%{x-b3-spanid}i", "traceID": "%{x-b3-traceid}i", "parentSpanID": "%{parentspanid}i", "traceParentID": "%{traceparent}i"}'
+      prefix: access-log
+      suffix: .log
+      max-days: 5
+      rename-on-rotate: true
+  # Enable graceful shutdown
+  shutdown: graceful
+
+# Logger configuration
+logging:
+  pattern:
+    console: "%d %-5level %logger : %msg%n"
+  level:
+    org.springframework: info
+    org.hibernate: info
+spring:
+  profiles:
+    include: common
+  banner:
+    location: classpath:/banner-dev.txt
+  session:
+    store-type: none
+  lifecycle:
+    timeout-per-shutdown-phase: 20s
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5440/postgres
+    username: postgres
+    password: postgres
+    hikari:
+      schema: manager
+      maximum-pool-size: 10
+      connection-timeout: 5000
+  flyway:
+    enabled: false
+  jpa:
+    hibernate:
+      # for now is set to 'update' (Hibernate create and update new tables and columns),
+      # later change to 'validate' (Hibernate only validates whether the tables and columns exist; otherwise, it throws an exception)
+      ddl-auto: update
+    show-sql: true
+  kafka:
+    bootstrap-servers: localhost:9092
+
+swagger:
+  title: ^project.name^
+  description: ^project.description^
+  version: ^project.version^
+  termsOfServiceUrl: \#
+  contactName: Ivor Gradiski-Zrinski
+  contactUrl: \#
+  contactEmail: mail@mail.com
+  license: License of API
+  licenseUrl: \#
+
+manager:
+  refTokDuration: 360000
+  jwtSecret: 9a4fu2c03d3b7a1e6f14c8a0b3f267d8b1d4e97f3c8a9d2b5f8e3a9c8b5f6v8a3d99a4fu2c03d3b7a1e6f14c8a0b3f267d8b1d4e97f3c8a9d2b5f8e3a9c8b5f6v8a3d9
+  jwtExpiration: 600000
+issuing:
+  uri: http://localhost:8086/issuing/api
