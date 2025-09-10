@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+  postgres_manager:
+    image: postgres:latest
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5440:5432'
+    volumes:
+      - postgres_manager_data:/var/lib/postgresql/data
+
+  postgres_issuing:
+    image: postgres:latest
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5441:5432'
+    volumes:
+      - postgres_issuing_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_manager_data:
+    driver: local
+  postgres_issuing_data:
+    driver: local
