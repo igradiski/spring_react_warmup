@@ -2,6 +2,7 @@ package com.example.card.manager.security.servicesImpl;
 
 import com.example.card.manager.domain.ERole;
 import com.example.card.manager.domain.User;
+import com.example.card.manager.domain.UserRole;
 import com.example.card.manager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -41,7 +42,6 @@ public class UserDetailsSecurityImpl implements UserDetails {
 	}
 
 	public static UserDetailsSecurityImpl build(User user) {
-
 		List<GrantedAuthority> authorities = user.getUserRoles().stream()
 				.map(role -> new SimpleGrantedAuthority(role.getRole().getRoleName().name()))
 				.collect(Collectors.toList());
@@ -50,9 +50,9 @@ public class UserDetailsSecurityImpl implements UserDetails {
 				.collect(Collectors.toSet());
 
 		return new UserDetailsSecurityImpl(
-				user.getId(), 
+				user.getId(),
 				user.getUsername(),
-				user.getPassword(), 
+				user.getPassword(),
 				authorities);
 	}
 
